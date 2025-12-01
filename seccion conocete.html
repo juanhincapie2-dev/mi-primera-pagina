@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Recursos para Diseñadores</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    .resource-card {
+      transition: all 0.3s ease;
+    }
+    
+    .resource-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    .video-thumbnail {
+      position: relative;
+      overflow: hidden;
+      border-radius: 0.5rem;
+    }
+    
+    .play-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.9;
+      transition: opacity 0.3s ease;
+    }
+    
+    .video-thumbnail:hover .play-icon {
+      opacity: 1;
+    }
+    
+    .category-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .search-input {
+      transition: box-shadow 0.3s ease;
+    }
+    
+    .search-input:focus {
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="w-full min-h-full">
+  <div id="app" class="w-full min-h-full"></div>
+  <script>
+    const defaultConfig = {
+      background_color: "#fff5f0",
+      surface_color: "#ffffff",
+      text_color: "#4a2c2a",
+      primary_action_color: "#f97316",
+      secondary_action_color: "#dc2626",
+      font_family: "Inter",
+      font_size: 16,
+      main_title: "Centro de Recursos para Diseñadores",
+      subtitle: "Todo lo que necesitas para impulsar tu creatividad",
+      videos_title: "📹 Videos Tutoriales",
+      documents_title: "📄 Documentos y Guías",
+      tools_title: "🛠️ Herramientas Recomendadas"
+    };
+
+    let config = {};
+
+    const videos = [
+      { id: 1, title: "Fundamentos de Tipografía", duration: "12:34", category: "Tipografía", level: "Principiante" },
+      { id: 2, title: "Teoría del Color Avanzada", duration: "18:45", category: "Color", level: "Intermedio" },
+      { id: 3, title: "Diseño de Interfaces Modernas", duration: "25:12", category: "UI/UX", level: "Avanzado" },
+      { id: 4, title: "Composición Visual Efectiva", duration: "15:30", category: "Composición", level: "Principiante" },
+      { id: 5, title: "Animaciones en Diseño Web", duration: "22:18", category: "Animación", level: "Intermedio" },
+      { id: 6, title: "Sistemas de Diseño Escalables", duration: "30:45", category: "Sistemas", level: "Avanzado" }
+    ];
+
+    const documents = [
+      { id: 1, title: "Guía Completa de Branding", type: "PDF", pages: 45, size: "2.4 MB" },
+      { id: 2, title: "Checklist de Accesibilidad", type: "PDF", pages: 12, size: "890 KB" },
+      { id: 3, title: "Paletas de Color 2024", type: "PDF", pages: 28, size: "1.8 MB" },
+      { id: 4, title: "Manual de Estilo Corporativo", type: "PDF", pages: 38, size: "3.1 MB" },
+      { id: 5, title: "Plantillas de Wireframes", type: "PDF", pages: 20, size: "1.2 MB" },
+      { id: 6, title: "Glosario de Diseño UX", type: "PDF", pages: 15, size: "650 KB" }
+    ];
+
+    const tools = [
+      { id: 1, name: "ColorHunt", description: "Paletas de color curadas", icon: "🎨", url: "#" },
+      { id: 2, name: "Unsplash", description: "Imágenes de stock gratuitas", icon: "📷", url: "#" },
+      { id: 3, name: "Google Fonts", description: "Fuentes web gratuitas", icon: "🔤", url: "#" },
+      { id: 4, name: "Dribbble", description: "Inspiración de diseño", icon: "✨", url: "#" },
+      { id: 5, name: "Figma Community", description: "Recursos y plugins", icon: "🔌", url: "#" },
+      { id: 6, name: "CSS Tricks", description: "Tutoriales y guías CSS", icon: "💻", url: "#" }
+    ];
+
+    function render() {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseFontStack = 'system-ui, -apple-system, sans-serif';
+      const baseSize = config.font_size || defaultConfig.font_size;
+      const backgroundColor = config.background_color || defaultConfig.background_color;
+      const surfaceColor = config.surface_color || defaultConfig.surface_color;
+      const textColor = config.text_color || defaultConfig.text_color;
+      const primaryColor = config.primary_action_color || defaultConfig.primary_action_color;
+      const secondaryColor = config.secondary_action_color || defaultConfig.secondary_action_color;
+      const mainTitle = config.main_title || defaultConfig.main_title;
+      const subtitle = config.subtitle || defaultConfig.subtitle;
+      const videosTitle = config.videos_title || defaultConfig.videos_title;
+      const documentsTitle = config.documents_title || defaultConfig.documents_title;
+      const toolsTitle = config.tools_title || defaultConfig.tools_title;
+
+      const app = document.getElementById('app');
+      app.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      app.style.backgroundColor = backgroundColor;
+      app.style.color = textColor;
+      app.style.minHeight = '100%';
+      app.style.width = '100%';
+
+      app.innerHTML = `
+        <div style="width: 100%; min-height: 100%; background-color: ${backgroundColor};">
+          <!-- Header -->
+          <header style="background-color: ${surfaceColor}; padding: 2rem 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <div style="max-width: 1200px; margin: 0 auto;">
+              <h1 style="font-size: ${baseSize * 2}px; font-weight: 800; color: ${textColor}; margin-bottom: 0.5rem;">${mainTitle}</h1>
+              <p style="font-size: ${baseSize * 1.125}px; color: ${textColor}; opacity: 0.7;">${subtitle}</p>
+              
+              <!-- Search Bar -->
+              <div style="margin-top: 1.5rem;">
+                <input 
+                  type="text" 
+                  placeholder="Buscar recursos..." 
+                  class="search-input"
+                  style="width: 100%; max-width: 500px; padding: 0.75rem 1rem; border: 2px solid ${primaryColor}; border-radius: 0.5rem; font-size: ${baseSize}px; outline: none; background-color: ${surfaceColor}; color: ${textColor};"
+                />
+              </div>
+            </div>
+          </header>
+
+          <!-- Main Content -->
+          <main style="max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem;">
+            
+            <!-- Videos Section -->
+            <section style="margin-bottom: 3rem;">
+              <h2 style="font-size: ${baseSize * 1.75}px; font-weight: 700; color: ${textColor}; margin-bottom: 1.5rem;">${videosTitle}</h2>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem;">
+                ${videos.map(video => `
+                  <div class="resource-card" style="background-color: ${surfaceColor}; border-radius: 0.75rem; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;">
+                    <div class="video-thumbnail" style="background: linear-gradient(135deg, ${primaryColor}, ${secondaryColor}); height: 180px; position: relative;">
+                      <div class="play-icon" style="width: 60px; height: 60px; background-color: ${surfaceColor}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="${primaryColor}">
+                          <path d="M8 5v14l11-7z"/>
+                        </svg>
+                      </div>
+                      <div style="position: absolute; bottom: 0.75rem; right: 0.75rem; background-color: rgba(0,0,0,0.8); color: white; padding: 0.25rem 0.5rem; border-radius: 0.25rem; font-size: ${baseSize * 0.75}px;">${video.duration}</div>
+                    </div>
+                    <div style="padding: 1rem;">
+                      <h3 style="font-size: ${baseSize * 1.125}px; font-weight: 600; color: ${textColor}; margin-bottom: 0.5rem;">${video.title}</h3>
+                      <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem;">
+                        <span class="category-badge" style="background-color: ${primaryColor}20; color: ${primaryColor};">${video.category}</span>
+                        <span class="category-badge" style="background-color: ${secondaryColor}20; color: ${secondaryColor};">${video.level}</span>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+
+            <!-- Documents Section -->
+            <section style="margin-bottom: 3rem;">
+              <h2 style="font-size: ${baseSize * 1.75}px; font-weight: 700; color: ${textColor}; margin-bottom: 1.5rem;">${documentsTitle}</h2>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
+                ${documents.map(doc => `
+                  <div class="resource-card" style="background-color: ${surfaceColor}; border-radius: 0.5rem; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; border-left: 4px solid ${primaryColor};">
+                    <div style="display: flex; align-items: start; gap: 1rem;">
+                      <div style="background-color: ${primaryColor}20; width: 48px; height: 48px; border-radius: 0.5rem; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="${primaryColor}">
+                          <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/>
+                        </svg>
+                      </div>
+                      <div style="flex: 1;">
+                        <h3 style="font-size: ${baseSize * 1.0625}px; font-weight: 600; color: ${textColor}; margin-bottom: 0.25rem;">${doc.title}</h3>
+                        <div style="font-size: ${baseSize * 0.875}px; color: ${textColor}; opacity: 0.6; margin-top: 0.5rem;">
+                          ${doc.pages} páginas • ${doc.size}
+                        </div>
+                        <button style="margin-top: 0.75rem; background-color: ${primaryColor}; color: white; padding: 0.5rem 1rem; border-radius: 0.375rem; font-size: ${baseSize * 0.875}px; font-weight: 600; border: none; cursor: pointer;">Descargar</button>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </section>
+
+            <!-- Tools Section -->
+            <section style="margin-bottom: 3rem;">
+              <h2 style="font-size: ${baseSize * 1.75}px; font-weight: 700; color: ${textColor}; margin-bottom: 1.5rem;">${toolsTitle}</h2>
+              <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem;">
+                ${tools.map(tool => `
+                  <a href="${tool.url}" target="_blank" rel="noopener noreferrer" class="resource-card" style="background-color: ${surfaceColor}; border-radius: 0.5rem; padding: 1.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-decoration: none; display: block;">
+                    <div style="font-size: ${baseSize * 2}px; margin-bottom: 0.75rem;">${tool.icon}</div>
+                    <h3 style="font-size: ${baseSize * 1.125}px; font-weight: 600; color: ${textColor}; margin-bottom: 0.5rem;">${tool.name}</h3>
+                    <p style="font-size: ${baseSize * 0.9375}px; color: ${textColor}; opacity: 0.7; line-height: 1.5;">${tool.description}</p>
+                    <div style="margin-top: 1rem; color: ${secondaryColor}; font-size: ${baseSize * 0.875}px; font-weight: 600;">Visitar →</div>
+                  </a>
+                `).join('')}
+              </div>
+            </section>
+
+          </main>
+
+          <!-- Navigation Buttons -->
+          <div style="max-width: 1200px; margin: 0 auto; padding: 0 1.5rem 2rem 1.5rem;">
+            <div style="display: flex; gap: 1rem; justify-content: center; align-items: center;">
+              <a href="index.html" class="nav-btn" style="text-decoration: none; background-color: ${primaryColor}; color: white; padding: 0.875rem 1.5rem; border-radius: 0.5rem; font-size: ${baseSize}px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.3s ease;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                  <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                Inicio
+              </a>
+              
+              <a href="tecnologia y pedagogia.html" style="text-decoration:none; background-color: ${secondaryColor}; color: white; padding: 0.875rem 1.5rem; border-radius: 0.5rem; font-size: ${baseSize}px; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 2px 8px rgba(0,0,0,0.15); transition: all 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.2)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0 2px 8px rgba(0,0,0,0.15)';">
+                Siguiente
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+                  <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <footer style="background-color: ${surfaceColor}; padding: 2rem 1.5rem; margin-top: 2rem; border-top: 1px solid ${textColor}20;">
+            <div style="max-width: 1200px; margin: 0 auto; text-align: center;">
+              <p style="font-size: ${baseSize * 0.875}px; color: ${textColor}; opacity: 0.7;">💡 Recursos curados para inspirar tu próximo proyecto</p>
+            </div>
+          </footer>
+        </div>
+      `;
+
+      // Add hover effects for buttons
+      const buttons = app.querySelectorAll('button');
+      buttons.forEach(button => {
+        button.addEventListener('mouseenter', function() {
+          this.style.transform = 'scale(1.05)';
+          this.style.transition = 'transform 0.2s ease';
+        });
+        button.addEventListener('mouseleave', function() {
+          this.style.transform = 'scale(1)';
+        });
+      });
+    }
+
+    async function onConfigChange(newConfig) {
+      config = newConfig;
+      render();
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_color || defaultConfig.background_color,
+              set: (value) => {
+                config.background_color = value;
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            },
+            {
+              get: () => config.surface_color || defaultConfig.surface_color,
+              set: (value) => {
+                config.surface_color = value;
+                window.elementSdk.setConfig({ surface_color: value });
+              }
+            },
+            {
+              get: () => config.text_color || defaultConfig.text_color,
+              set: (value) => {
+                config.text_color = value;
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            },
+            {
+              get: () => config.primary_action_color || defaultConfig.primary_action_color,
+              set: (value) => {
+                config.primary_action_color = value;
+                window.elementSdk.setConfig({ primary_action_color: value });
+              }
+            },
+            {
+              get: () => config.secondary_action_color || defaultConfig.secondary_action_color,
+              set: (value) => {
+                config.secondary_action_color = value;
+                window.elementSdk.setConfig({ secondary_action_color: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["main_title", config.main_title || defaultConfig.main_title],
+          ["subtitle", config.subtitle || defaultConfig.subtitle],
+          ["videos_title", config.videos_title || defaultConfig.videos_title],
+          ["documents_title", config.documents_title || defaultConfig.documents_title],
+          ["tools_title", config.tools_title || defaultConfig.tools_title]
+        ])
+      });
+    }
+
+    render();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a5bb4ecf630aefa',t:'MTc2NDM1MjIxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

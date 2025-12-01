@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EIDOS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Estilos del carrusel de frases -->
+    <style>
+      .quote-section { max-width: 1000px; margin: 0 auto; padding: 0 1rem; }
+      .quote-section > h2 { text-align: center; margin: 1rem 0 .5rem 0; }
+      .quote-carousel{position:relative;max-width:900px;margin:0.75rem auto 1.5rem auto;padding:0 1rem}
+      .quote-viewport{overflow:hidden; cursor: grab;}
+      .quote-viewport.grabbing{cursor: grabbing;}
+      .quote-track{display:flex;transition:transform .35s ease; user-select:none;}
+      .quote-slide{min-width:100%;font-size:1rem;line-height:1.6;color:#1f2937;background:#3979ce;border-radius:10px;padding:1rem 1.25rem;box-shadow:0 4px 14px rgba(175, 41, 41, 0.08)}
+      .quote-dots{display:flex;gap:.4rem;justify-content:center;margin-top:.75rem}
+      .quote-dots button{width:8px;height:8px;border-radius:50%;border:none;background:#6191cc;cursor:pointer}
+      .quote-dots button.active{background:#667eea}
+      @media(max-width:600px){.quote-slide{font-size:.95rem}.quote-carousel{padding:0 .5rem}}
+    </style>
+</head>
+<body>
+  <!-- Logo -->
+  <div class="site-logo-wrap">
+    <img src="el ultimo chjajaja aurion.svg" alt="EIDOS logo" class="site-logo">
+  </div>
+
+  <!-- Intro -->
+  <h2>DESCUBRE LO QUE TE INSPIRA</h2>
+
+  <div class="nav-buttons22">
+    <p>Aurion simboliza el inicio de un nuevo camino hacia el conocimiento y la identidad profesional. Nace de la unión entre aurora, que representa un nuevo amanecer y la oportunidad de empezar, y orion, que simboliza la orientación, la búsqueda de un rumbo y la luz que guía el proceso de aprendizaje.</p>
+  </div>
+
+  <!-- Sección: ¿Sabias que? + Carrusel de frases -->
+  <section id="sabias-que" class="quote-section">
+    <h2>¿Sabias que?</h2>
+    
+    <!-- Carrusel de Frases (insertado debajo del H2) -->
+  <section class="phrase-carousel">
+    <div class="pc-container">
+      <div class="pc-quote-wrapper">
+        <div class="pc-quote-icon">❝</div>
+        <p class="pc-quote-text" id="pcQuoteText"></p>
+      </div>
+      <div class="pc-controls">
+        <button class="pc-nav-button" id="pcPrevBtn" aria-label="Frase anterior">←</button>
+        <div class="pc-indicators" id="pcIndicators"></div>
+        <button class="pc-nav-button" id="pcNextBtn" aria-label="Siguiente frase">→</button>
+      </div>
+    </div>
+    <style>
+      .phrase-carousel { display:flex; justify-content:center; padding: 1rem 0rem; margin: 20px 0 24px; }
+      .pc-container { width: 100%; max-width: 800px; }
+      .pc-quote-wrapper { width: 100%; min-height: 70px; background:#52a0aa; border-radius: 18px; padding: 2rem 0rem; box-shadow: 0 14px 40px rgba(0,0,0,.18); position: relative; overflow: hidden; text-align:center; }
+      .pc-quote-icon { font-size: 3rem; color:#1a39c5; opacity:.18; position:absolute; top:2.25rem; left:1.25rem; }
+      .pc-quote-text { font-size: 1.35rem; line-height:1.6; color:#2d3748; margin:0; opacity:0; transform: translateY(14px); animation: pcFadeInUp .45s ease forwards; font-style: italic; }
+      @keyframes pcFadeInUp { to { opacity:1; transform: translateY(0); } }
+      .pc-controls { display:flex; gap: 1rem; margin-top: 1rem; align-items:center; justify-content:center; }
+      .pc-nav-button { width:48px; height:48px; border-radius:50%; background:#667eea; color:#fff; border:none; font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; box-shadow: 0 4px 12px rgba(102,126,234,.25); }
+      .pc-nav-button:hover { background:#5568d3; transform: scale(1.08); box-shadow: 0 6px 16px rgba(102,126,234,.35); }
+      .pc-nav-button:active { transform: scale(.94); }
+      .pc-indicators { display:flex; gap:.6rem; }
+      .pc-indicators .pc-indicator { width:10px; height:10px; border-radius:50%; background:#cbd5e0; cursor:pointer; transition: all .25s ease; }
+      .pc-indicators .pc-indicator.active { background:#667eea; width:26px; border-radius: 6px; }
+      @media(max-width:768px){ .pc-quote-wrapper{padding:2rem 1.5rem; min-height:220px;} .pc-quote-text{font-size:1.1rem;} .pc-quote-icon{font-size:2.2rem;} .pc-nav-button{width:42px;height:42px;font-size:1.05rem;} }
+      @media(max-width:480px){ .pc-quote-text{font-size:1rem;} .pc-quote-wrapper{padding:1.5rem 1.25rem;} }
+    </style>
+    <script>
+      (function(){
+        const defaultConfig = {
+          quote_1: "El diseño no es solo lo que se ve y se siente. El diseño es cómo funciona.",
+          quote_2: "Enseñar es dejar una huella en la vida de otra persona para siempre.",
+          quote_3: "El buen diseño es tan poco diseño como sea posible.",
+          quote_4: "Un buen maestro es como una vela: se consume para iluminar el camino de otros.",
+          quote_5: "El diseño crea cultura. La cultura da forma a valores. Los valores determinan el futuro."
+        };
+        let currentIndex = 0;
+        const quoteText = document.getElementById('pcQuoteText');
+        const prevBtn = document.getElementById('pcPrevBtn');
+        const nextBtn = document.getElementById('pcNextBtn');
+        const indicatorsContainer = document.getElementById('pcIndicators');
+        function getQuotes(){
+          return [
+            (window.elementSdk?.config?.quote_1) || defaultConfig.quote_1,
+            (window.elementSdk?.config?.quote_2) || defaultConfig.quote_2,
+            (window.elementSdk?.config?.quote_3) || defaultConfig.quote_3,
+            (window.elementSdk?.config?.quote_4) || defaultConfig.quote_4,
+            (window.elementSdk?.config?.quote_5) || defaultConfig.quote_5,
+          ];
+        }
+        function createIndicators(count){
+          indicatorsContainer.innerHTML='';
+          for(let i=0;i<count;i++){
+            const dot = document.createElement('div');
+            dot.className = 'pc-indicator'+(i===currentIndex?' active':'');
+            dot.addEventListener('click', ()=>{ goTo(i); });
+            indicatorsContainer.appendChild(dot);
+          }
+        }
+        function updateIndicators(){
+          const dots = indicatorsContainer.querySelectorAll('.pc-indicator');
+          dots.forEach((d,idx)=> d.classList.toggle('active', idx===currentIndex));
+        }
+        function showQuote(idx, quotes){
+          quoteText.style.animation='none';
+          setTimeout(()=>{
+            quoteText.textContent = quotes[idx];
+            quoteText.style.animation='pcFadeInUp .45s ease forwards';
+          },10);
+          updateIndicators();
+        }
+        function next(){ const q=getQuotes(); currentIndex=(currentIndex+1)%q.length; showQuote(currentIndex,q); }
+        function prev(){ const q=getQuotes(); currentIndex=(currentIndex-1+q.length)%q.length; showQuote(currentIndex,q); }
+        function goTo(i){ const q=getQuotes(); currentIndex=i; showQuote(currentIndex,q); }
+        prevBtn.addEventListener('click', prev);
+        nextBtn.addEventListener('click', next);
+        setInterval(next, 5000);
+        // init
+        const q = getQuotes();
+        createIndicators(q.length);
+        showQuote(currentIndex, q);
+      })();
+    </script>
+  </section>
+
+  <!-- Carrusel de imágenes existente -->
+  <div class="carousel">
+      <button class="carousel-button prev">&#10094;</button>
+      <div class="carousel-container">
+          <div class="carousel-slide">
+              <img src="https://static.wixstatic.com/media/4677be52e2ffc78c06852343db0ac103.jpg/v1/fill/w_568,h_378,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/4677be52e2ffc78c06852343db0ac103.jpg" alt="Imagen 1">
+          </div>
+          <div class="carousel-slide">
+              <img src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=1000&q=80" alt="Imagen 2">
+          </div>
+          <div class="carousel-slide">
+              <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1000&q=80" alt="Imagen 3">
+          </div>
+      </div>
+      <button class="carousel-button next">&#10095;</button>
+      <div class="carousel-dots">
+          <button class="dot active"></button>
+          <button class="dot"></button>
+          <button class="dot"></button>
+      </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="modern-navbar">
+    <button class="modern-menu-btn" aria-label="Abrir menú">
+      <span class="modern-bar"></span>
+      <span class="modern-bar"></span>
+      <span class="modern-bar"></span>
+    </button>
+    <div class="nav-buttons">
+      <a href="#home" class="nav-btn">Home</a>
+      <a href="https://meansoftransportnataypao.my.canva.site/copia-de-espacio-para-publicar-novedades-y-noticias" class="nav-btn">Noticias</a>
+      <a href="https://meansoftransportnataypao.my.canva.site/" class="nav-btn">Egresados</a>
+    </div>
+    <div class="modern-menu-content">
+      <a href="indexGOD.html">Explora tu camino</a>
+      <a href="TEST VOCACIONAL.HTML">Conocete</a>
+      <a href="https://educacion.utp.edu.co/licenciatura-en-tecnologia/plan-de-estudios/?id=41">Elige tu enfoque</a>
+      <a href="seccion conocete.html">Aprende a tu ritmo</a>
+      <a href="seccion contactanos.html">Contactanos</a> 
+    </div>
+  </nav>
+
+  <img class="canva-logo" src="LOGO_EIDOS_white.svg" alt="EIDOS Logo">
+
+  <!-- Scripts -->
+  <script>
+    // Menú moderno hover
+    document.addEventListener('DOMContentLoaded', function() {
+      const btn = document.querySelector('.modern-menu-btn');
+      const menu = document.querySelector('.modern-menu-content');
+      btn.addEventListener('mouseenter', function() { menu.classList.add('show'); });
+      btn.addEventListener('mouseleave', function() {
+        setTimeout(() => { if (!menu.matches(':hover')) menu.classList.remove('show'); }, 150);
+      });
+      menu.addEventListener('mouseleave', function() { menu.classList.remove('show'); });
+      menu.addEventListener('mouseenter', function() { menu.classList.add('show'); });
+    });
+  </script>
+
+  <script>
+    // Carrusel de imágenes existente
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.querySelector('.carousel-container');
+      const slides = document.querySelectorAll('.carousel-slide');
+      const prevButton = document.querySelector('.prev');
+      const nextButton = document.querySelector('.next');
+      let currentIndex = 0;
+      const dots = document.querySelectorAll('.dot');
+
+      function updateCarousel() {
+        container.style.transform = `translateX(-${currentIndex * 33.333}%)`;
+        dots.forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentIndex);
+        });
+      }
+
+      prevButton.addEventListener('click', () => {
+        currentIndex = (currentIndex > 0) ? currentIndex - 1 : slides.length - 1;
+        updateCarousel();
+      });
+
+      nextButton.addEventListener('click', () => {
+        currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+        updateCarousel();
+      });
+
+      dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          currentIndex = index;
+          updateCarousel();
+        });
+      });
+
+      setInterval(() => {
+        currentIndex = (currentIndex < slides.length - 1) ? currentIndex + 1 : 0;
+        updateCarousel();
+      }, 5000);
+    });
+  </script>
+</body>
+</html>

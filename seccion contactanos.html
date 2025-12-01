@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentación del Equipo</title>
+  <link rel="stylesheet" href="seccion contactanos.css">
+  <script src="/_sdk/element_sdk.js"></script>
+
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="main-container">
+   <header class="page-header">
+    <img src="logo valemonda xdxd.svg" alt="EIDOS logo" class="team-photo">
+    <p class="page-subtitle" id="pageSubtitle">Conoce a nuestros talentosos miembros</p>
+   </header>
+   <main class="team-grid"><!-- Líder -->
+    <article class="member-card">
+     <div class="member-avatar">
+      👑
+     </div>
+     <h2 class="member-name" id="member1Name">VALENTINA TOLE</h2>
+     <div class="member-role" id="member1Role">
+      Líder
+     </div>
+     <p class="member-bio" id="member1Bio">Liderando el equipo con pasión y visión hacia el éxito</p>
+     <div class="social-links"><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">💼</a> <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter">🐦</a> <a href="mailto:ana@example.com" class="social-link" aria-label="Email">✉️</a> <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">💻</a>
+     </div>
+    </article><!-- Investigador -->
+    <article class="member-card">
+     <div class="member-avatar">
+      🔬
+     </div>
+     <h2 class="member-name" id="member2Name">EVELYN OSPINA</h2>
+     <div class="member-role" id="member2Role">
+      Investigador
+     </div>
+     <p class="member-bio" id="member2Bio">Analizando datos y descubriendo nuevas perspectivas</p>
+     <div class="social-links"><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">💼</a> <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter">🐦</a> <a href="mailto:carlos@example.com" class="social-link" aria-label="Email">✉️</a> <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">💻</a>
+     </div>
+    </article><!-- Diseñadora -->
+    <article class="member-card">
+     <div class="member-avatar">
+      🎨
+     </div>
+     <h2 class="member-name" id="member3Name">SARA TORRES</h2>
+     <div class="member-role" id="member3Role">
+      Diseñadora
+     </div>
+     <p class="member-bio" id="member3Bio">Creando diseños hermosos y funcionales que inspiran</p>
+     <div class="social-links"><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">💼</a> <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter">🐦</a> <a href="mailto:maria@example.com" class="social-link" aria-label="Email">✉️</a> <a href="https://behance.net" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Behance">🎯</a>
+     </div>
+    </article><!-- Programador -->
+    <article class="member-card">
+     <div class="member-avatar">
+      ⚙️
+     </div>
+     <h2 class="member-name" id="member4Name">JUAN JOSE HINCAPIÉ</h2>
+     <div class="member-role" id="member4Role">
+      Programador
+     </div>
+     <p class="member-bio" id="member4Bio">Construyendo soluciones robustas y escalables con código</p>
+     <div class="social-links"><a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="LinkedIn">💼</a> <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Twitter">🐦</a> <a href="mailto:david@example.com" class="social-link" aria-label="Email">✉️</a> <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="GitHub">💻</a>
+     </div>
+    </article>
+   </main>
+  </div>
+  <script>
+    const defaultConfig = {
+      page_title: "Nuestro Equipo",
+      page_subtitle: "Conoce a nuestros talentosos miembros",
+      member1_name: "SARA TORRES",
+      member1_role: "Líder",
+      member1_bio: "Liderando el equipo con pasión y visión hacia el éxito",
+      member2_name: "EVELYN OSPINA",
+      member2_role: "Investigador",
+      member2_bio: "Analizando datos y descubriendo nuevas perspectivas",
+      member3_name: "VALENTINA TOLE",
+      member3_role: "Diseñadora",
+      member3_bio: "Creando diseños hermosos y funcionales que inspiran",
+      member4_name: "JUAN JOSE HINCAPIÉ",
+      member4_role: "Programador",
+      member4_bio: "Construyendo soluciones robustas y escalables con código",
+      background_color: "#667eea",
+      card_color: "#ffffff",
+      text_color: "#2d3748",
+      accent_color: "#667eea"
+    };
+
+    async function onConfigChange(config) {
+      document.getElementById('pageTitle').textContent = config.page_title || defaultConfig.page_title;
+      document.getElementById('pageSubtitle').textContent = config.page_subtitle || defaultConfig.page_subtitle;
+      
+      document.getElementById('member1Name').textContent = config.member1_name || defaultConfig.member1_name;
+      document.getElementById('member1Role').textContent = config.member1_role || defaultConfig.member1_role;
+      document.getElementById('member1Bio').textContent = config.member1_bio || defaultConfig.member1_bio;
+      
+      document.getElementById('member2Name').textContent = config.member2_name || defaultConfig.member2_name;
+      document.getElementById('member2Role').textContent = config.member2_role || defaultConfig.member2_role;
+      document.getElementById('member2Bio').textContent = config.member2_bio || defaultConfig.member2_bio;
+      
+      document.getElementById('member3Name').textContent = config.member3_name || defaultConfig.member3_name;
+      document.getElementById('member3Role').textContent = config.member3_role || defaultConfig.member3_role;
+      document.getElementById('member3Bio').textContent = config.member3_bio || defaultConfig.member3_bio;
+      
+      document.getElementById('member4Name').textContent = config.member4_name || defaultConfig.member4_name;
+      document.getElementById('member4Role').textContent = config.member4_role || defaultConfig.member4_role;
+      document.getElementById('member4Bio').textContent = config.member4_bio || defaultConfig.member4_bio;
+
+      const textColor = config.text_color || defaultConfig.text_color;
+      const accentColor = config.accent_color || defaultConfig.accent_color;
+      
+      document.querySelectorAll('.member-name').forEach(el => {
+        el.style.color = textColor;
+      });
+      
+      document.querySelectorAll('.member-role').forEach(el => {
+        el.style.color = accentColor;
+        el.style.background = `${accentColor}1a`;
+      });
+    }
+
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.background_color || defaultConfig.background_color,
+            set: (value) => {
+              config.background_color = value;
+              document.body.style.background = `linear-gradient(135deg, ${value} 0%, #764ba2 100%)`;
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ background_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.card_color || defaultConfig.card_color,
+            set: (value) => {
+              config.card_color = value;
+              document.querySelectorAll('.member-card').forEach(card => {
+                card.style.background = value;
+              });
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ card_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.text_color || defaultConfig.text_color,
+            set: (value) => {
+              config.text_color = value;
+              document.querySelectorAll('.member-name').forEach(el => {
+                el.style.color = value;
+              });
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ text_color: value });
+              }
+            }
+          },
+          {
+            get: () => config.accent_color || defaultConfig.accent_color,
+            set: (value) => {
+              config.accent_color = value;
+              document.querySelectorAll('.member-role').forEach(el => {
+                el.style.color = value;
+                el.style.background = `${value}1a`;
+              });
+              document.querySelectorAll('.member-avatar').forEach(el => {
+                el.style.background = `linear-gradient(135deg, ${value} 0%, #764ba2 100%)`;
+              });
+              document.querySelectorAll('.social-link:hover').forEach(el => {
+                el.style.background = value;
+              });
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ accent_color: value });
+              }
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      };
+    }
+
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["page_title", config.page_title || defaultConfig.page_title],
+        ["page_subtitle", config.page_subtitle || defaultConfig.page_subtitle],
+        ["member1_name", config.member1_name || defaultConfig.member1_name],
+        ["member1_role", config.member1_role || defaultConfig.member1_role],
+        ["member1_bio", config.member1_bio || defaultConfig.member1_bio],
+        ["member2_name", config.member2_name || defaultConfig.member2_name],
+        ["member2_role", config.member2_role || defaultConfig.member2_role],
+        ["member2_bio", config.member2_bio || defaultConfig.member2_bio],
+        ["member3_name", config.member3_name || defaultConfig.member3_name],
+        ["member3_role", config.member3_role || defaultConfig.member3_role],
+        ["member3_bio", config.member3_bio || defaultConfig.member3_bio],
+        ["member4_name", config.member4_name || defaultConfig.member4_name],
+        ["member4_role", config.member4_role || defaultConfig.member4_role],
+        ["member4_bio", config.member4_bio || defaultConfig.member4_bio]
+      ]);
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities,
+        mapToEditPanelValues
+      });
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a65e8efa2483ee6',t:'MTc2NDQ1OTIwNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Educativo</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #2440bb 0%, #4b62a2 100%);
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Navegación */
+    nav {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 1.2rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #667eea;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Logo EIDOS en navbar */
+    .site-logo {
+      width: 140px; /* ancho inicial (JS lo ajusta dinámicamente) */
+      height: auto;
+      display: block;
+      will-change: width;
+    }
+
+    .menu-items {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    .menu-items a {
+      color: #4a5568;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      position: relative;
+    }
+
+    .menu-items a:hover {
+      color: #667eea;
+      background: rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .menu-items a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: #1d3abd;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .menu-items a:hover::after {
+      width: 80%;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 6rem 2rem;
+      text-align: center;
+      color: white;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      margin: 0 0 1.5rem 0;
+      font-weight: 800;
+      line-height: 1.2;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      margin: 0 0 2.5rem 0;
+      opacity: 0.95;
+      line-height: 1.6;
+    }
+
+    .cta-button {
+      display: inline-block;
+      text-decoration: none;
+      background: white;
+      color: #667eea;
+      padding: 1rem 2.5rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      background: #f7fafc;
+    }
+
+    /* Content Cards */
+    .content-section {
+      background: white;
+      padding: 5rem 2rem;
+      margin-top: 3rem;
+      border-radius: 40px 40px 0 0;
+    }
+
+    .cards-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      border: 2px solid #f7fafc;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.15);
+      border-color: #1c349c;
+    }
+
+    .card-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      color: #2d3748;
+      font-size: 1.5rem;
+      margin: 0 0 1rem 0;
+    }
+
+    .card p {
+      color: #718096;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Mobile Menu Toggle */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #4a5568;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .menu-items {
+        display: none;
+        width: 100%;
+        flex-direction: column;
+        gap: 0;
+        background: white;
+        border-radius: 12px;
+        padding: 1rem;
+        margin-top: 1rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .menu-items.active {
+        display: flex;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <nav>
+   <div class="nav-container">
+    <a href="index.html" aria-label="Ir al inicio" style="display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;">
+      <img src="el ultimo chjajaja aurion.svg" class="site-logo" alt="el ultimo chjajaja aurion">
+      <span id="site-title"></span>
+    </a>
+    </div><button class="menu-toggle" onclick="toggleMenu()" aria-label="Toggle menu"> ☰ </button>
+   </div>
+  </nav>
+  <div class="hero">
+   <h1 id="hero-title">Aprende sin límites</h1>
+   <p id="hero-subtitle">En el contexto de la Licenciatura en Tecnología con énfasis en Comunicación, Aurion refleja el proceso de autodescubrimiento que viven los estudiantes: encontrar su propósito, construir su identidad profesional y definir su dirección dentro de las diversas áreas del programa.</p><a class="cta-button" id="cta-button" href="https://educacion.utp.edu.co/licenciatura-en-tecnologia/?id=41" target="_blank" rel="noopener noreferrer">Comenzar ahora</a>
+  </div>
+  <div class="content-section">
+   <div class="cards-container">
+    <div class="card">
+     <div class="card-icon">
+      👩🏻‍🏫
+     </div>
+     <h3>Pedagógico</h3>
+     <p>Analiza y diseña sistemas educativos, adaptando métodos de enseñanza para optimizar el aprendizaje en diversas etapas de la vida y en diferentes contextos como escuelas, empresas y organizaciones sociales.</p>
+    </div>
+    <div class="card">
+     <div class="card-icon">
+      👩🏻‍💻
+     </div>
+     <h3>Tecnologíca</h3>
+     <p>Conéctate con estudiantes de todo el mundo y aprende colaborativamente en un ambiente inclusivo.</p>
+    </div>
+    <div class="card">
+     <div class="card-icon">
+      🎙️
+     </div>
+     <h3>Comunicativa</h3>
+     <p>Se un profesional que se encarga de la producción, gestión y difusión de mensajes a través de diversos medios, como la radio, televisión, cine y plataformas digitales. Sus funciones incluyen informar al público, crear estrategias de comunicación para organizaciones, desarrollar contenidos y gestionar la comunicación interna y externa de empresas.</p>
+    </div>
+    <div class="card">
+     <div class="card-icon">
+      🎭
+     </div>
+     <h3>Audiovisual</h3>
+     <p>Comunicadores visuales que utilizan su creatividad y herramientas tecnológicas para transformar ideas en mensajes impactantes y funcionales para el público. </p>
+    </div>
+  <script>
+    const defaultConfig = {
+      site_title: "EduExplora",
+      hero_title: "Aprende sin límites",
+      hero_subtitle: "Descubre miles de cursos diseñados para impulsar tu futuro. Educación de calidad al alcance de todos.",
+      cta_button: "Comenzar ahora",
+      background_gradient_start: "#667eea",
+      background_gradient_end: "#764ba2",
+      card_hover_color: "#667eea",
+      button_background: "#ffffff",
+      button_text_color: "#667eea",
+      nav_link_color: "#4a5568",
+      nav_link_hover: "#667eea",
+      font_family: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+      font_size: 16
+    };
+
+    function toggleMenu() {
+      const menuItems = document.getElementById('menu-items');
+      menuItems.classList.toggle('active');
+    }
+
+    async function onConfigChange(config) {
+      const customFont = config.font_family || defaultConfig.font_family;
+      const baseSize = config.font_size || defaultConfig.font_size;
+      const baseFontStack = 'Tahoma, Geneva, Verdana, sans-serif';
+
+      document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+      document.body.style.fontSize = `${baseSize}px`;
+
+      document.body.style.background = `linear-gradient(135deg, ${config.background_gradient_start || defaultConfig.background_gradient_start} 0%, ${config.background_gradient_end || defaultConfig.background_gradient_end} 100%)`;
+
+      document.getElementById('site-title').textContent = config.site_title || defaultConfig.site_title;
+      document.getElementById('hero-title').textContent = config.hero_title || defaultConfig.hero_title;
+      document.getElementById('hero-subtitle').textContent = config.hero_subtitle || defaultConfig.hero_subtitle;
+      document.getElementById('cta-button').textContent = config.cta_button || defaultConfig.cta_button;
+
+      const logo = document.querySelector('.logo span:last-child');
+      logo.style.color = config.nav_link_hover || defaultConfig.nav_link_hover;
+      logo.style.fontSize = `${baseSize * 1.125}rem`;
+
+      const heroTitle = document.getElementById('hero-title');
+      heroTitle.style.fontSize = `${baseSize * 2.1875}rem`;
+
+      const heroSubtitle = document.getElementById('hero-subtitle');
+      heroSubtitle.style.fontSize = `${baseSize * 0.8125}rem`;
+
+      const ctaButton = document.querySelector('.cta-button');
+      ctaButton.style.background = config.button_background || defaultConfig.button_background;
+      ctaButton.style.color = config.button_text_color || defaultConfig.button_text_color;
+      ctaButton.style.fontSize = `${baseSize * 0.6875}rem`;
+
+      const menuLinks = document.querySelectorAll('.menu-items a');
+      menuLinks.forEach(link => {
+        link.style.color = config.nav_link_color || defaultConfig.nav_link_color;
+      });
+
+      const cardTitles = document.querySelectorAll('.card h3');
+      cardTitles.forEach(title => {
+        title.style.fontSize = `${baseSize * 0.9375}rem`;
+      });
+
+      const cardParagraphs = document.querySelectorAll('.card p');
+      cardParagraphs.forEach(p => {
+        p.style.fontSize = `${baseSize}px`;
+      });
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [
+            {
+              get: () => config.background_gradient_start || defaultConfig.background_gradient_start,
+              set: (value) => {
+                config.background_gradient_start = value;
+                window.elementSdk.setConfig({ background_gradient_start: value });
+              }
+            },
+            {
+              get: () => config.background_gradient_end || defaultConfig.background_gradient_end,
+              set: (value) => {
+                config.background_gradient_end = value;
+                window.elementSdk.setConfig({ background_gradient_end: value });
+              }
+            },
+            {
+              get: () => config.button_background || defaultConfig.button_background,
+              set: (value) => {
+                config.button_background = value;
+                window.elementSdk.setConfig({ button_background: value });
+              }
+            },
+            {
+              get: () => config.button_text_color || defaultConfig.button_text_color,
+              set: (value) => {
+                config.button_text_color = value;
+                window.elementSdk.setConfig({ button_text_color: value });
+              }
+            },
+            {
+              get: () => config.nav_link_hover || defaultConfig.nav_link_hover,
+              set: (value) => {
+                config.nav_link_hover = value;
+                window.elementSdk.setConfig({ nav_link_hover: value });
+              }
+            }
+          ],
+          borderables: [],
+          fontEditable: {
+            get: () => config.font_family || defaultConfig.font_family,
+            set: (value) => {
+              config.font_family = value;
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          },
+          fontSizeable: {
+            get: () => config.font_size || defaultConfig.font_size,
+            set: (value) => {
+              config.font_size = value;
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["site_title", config.site_title || defaultConfig.site_title],
+          ["hero_title", config.hero_title || defaultConfig.hero_title],
+          ["hero_subtitle", config.hero_subtitle || defaultConfig.hero_subtitle],
+          ["cta_button", config.cta_button || defaultConfig.cta_button]
+        ])
+      });
+    }
+  </script>
+  <script>
+    // Reducción progresiva del logo con el scroll
+    (function() {
+      const logo = document.querySelector('.site-logo');
+      if (!logo) return;
+      const baseWidth = 180; // px (ancho inicial)
+      const minWidth = 60;   // px (ancho mínimo)
+      const shrinkStart = 0; // px de scroll para empezar a reducir
+      const shrinkEnd = 1000; // px de scroll a partir del cual llega al tamaño mínimo
+
+      function updateLogo() {
+        const y = window.scrollY || document.documentElement.scrollTop || 0;
+        const t = Math.min(1, Math.max(0, (y - shrinkStart) / (shrinkEnd - shrinkStart)));
+        const width = baseWidth - (baseWidth - minWidth) * t;
+        logo.style.width = Math.round(width) + 'px';
+      }
+
+      updateLogo();
+      window.addEventListener('scroll', updateLogo, { passive: true });
+      window.addEventListener('resize', updateLogo);
+    })();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a2ced587096aefa',t:'MTc2Mzg2MTY5Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
